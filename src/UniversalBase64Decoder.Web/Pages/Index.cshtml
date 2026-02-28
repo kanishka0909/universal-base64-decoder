@@ -38,19 +38,35 @@
 
     <h4>Preview:</h4>
 
-    @if (Model.FileType == "PNG Image" || Model.FileType == "JPEG Image")
+    @* ================= PRIMARY PREVIEW ================= *@
+
+    @switch (Model.FileType)
     {
-        <img src="data:@Model.MimeType;base64,@Model.RawBase64"
-             style="max-width:500px; border:1px solid #ccc;" />
+        case "PNG Image":
+        case "JPEG Image":
+            <img src="data:@Model.MimeType;base64,@Model.RawBase64"
+                 style="max-width:500px; border:1px solid #ccc;" />
+            break;
+
+        case "PDF Document":
+            <iframe src="data:@Model.MimeType;base64,@Model.RawBase64"
+                    width="600" height="500"
+                    style="border:1px solid #ccc;"></iframe>
+            break;
+
+        default:
+            <pre>@Model.Result</pre>
+            break;
     }
-    else if (Model.FileType == "PDF Document")
+
+    @* ================= ENHANCEMENTS ================= *@
+
+    @* ZPL Rendering Enhancement *@
+    @if (Model.RenderedImageBase64 != null)
     {
-        <iframe src="data:@Model.MimeType;base64,@Model.RawBase64"
-                width="600" height="500"
-                style="border:1px solid #ccc;"></iframe>
-    }
-    else
-    {
-        <pre>@Model.Result</pre>
+        <hr />
+        <h4>Rendered Label (ZPL)</h4>
+        <img src="data:image/png;base64,@Model.RenderedImageBase64"
+             style="max-width:500px; border:1px solid #ccc; padding:6px;" />
     }
 }
