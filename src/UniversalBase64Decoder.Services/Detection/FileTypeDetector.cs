@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Linq;
 
 namespace UniversalBase64Decoder.Services.Detection;
 
@@ -21,10 +22,17 @@ public static class FileTypeDetector
         if (data[0] == 0xFF && data[1] == 0xD8)
             return ("JPEG Image", ".jpg");
 
-        // ZPL heuristic (text-based)
-        var textSample = Encoding.UTF8.GetString(data.Take(100).ToArray());
-        if (textSample.Contains("^XA"))
-            return ("ZPL Label", ".zpl");
+        // ZPL detection
+        try
+        {
+            var text = Encoding.UTF8.GetString(data);
+
+            if (text.Contains("^XA") && text.Contains("^XZ"))
+                return ("ZPL Label", ".zpl");
+        }
+        catch
+        {
+        }
 
         return ("Unknown Binary", ".bin");
     }
