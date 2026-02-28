@@ -1,0 +1,50 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Universal Base64 Decoder";
+}
+
+<h2>Universal Base64 Decoder</h2>
+
+<form method="post">
+    <div>
+        <textarea asp-for="InputBase64" rows="8" cols="80"
+                  placeholder="Paste base64 string here..."></textarea>
+    </div>
+
+    <br />
+
+    <button type="submit">Decode</button>
+</form>
+
+@if (Model.Result != null)
+{
+    <hr />
+
+    <h3>Decoded Output</h3>
+
+    <p><strong>File Type:</strong> @Model.FileType</p>
+    <p><strong>Suggested Extension:</strong> @Model.Extension</p>
+    <p><strong>Size:</strong> @Model.Size bytes</p>
+    @if (Model.RawBase64 != null)
+    {
+        <p>
+            <a download="@Model.DownloadFileName"
+               href="data:application/octet-stream;base64,@Model.RawBase64">
+                ⬇️ Download decoded file
+            </a>
+        </p>
+    }
+
+    <h4>Preview:</h4>
+
+    @if (Model.FileType == "PNG Image" || Model.FileType == "JPEG Image")
+    {
+        <img src="data:image/png;base64,@Model.RawBase64"
+             style="max-width:400px; border:1px solid #ccc;" />
+    }
+    else
+    {
+        <pre>@Model.Result</pre>
+    }
+}
