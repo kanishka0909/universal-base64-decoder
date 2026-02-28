@@ -15,6 +15,7 @@ public class IndexModel : PageModel
     public string? Result { get; private set; }
 
     public string? FileType { get; private set; }
+    public string? MimeType { get; private set; }
     public string? Extension { get; private set; }
     public long Size { get; private set; }
     public string? RawBase64 { get; private set; }
@@ -49,6 +50,13 @@ public class IndexModel : PageModel
         FileType = decoded.DetectedFileType;
         Extension = decoded.SuggestedExtension;
         Size = decoded.Size;
+        MimeType = FileType switch
+        {
+            "PNG Image" => "image/png",
+            "JPEG Image" => "image/jpeg",
+            "PDF Document" => "application/pdf",
+            _ => "application/octet-stream"
+        };
         DownloadFileName = $"decoded{Extension}";
         RawBase64 = Convert.ToBase64String(decoded.Data!);
 
