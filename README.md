@@ -1,0 +1,54 @@
+🚀 Universal Base64 DecoderA live web utility that decodes Base64 strings and intelligently previews the output with multi-format export support.🌐 
+**Live Website:** https://universal-base64-decoder.onrender.com/---## 
+✨ Features- 
+🔍 Smart file detection (PNG, JPEG, PDF, ZPL)- 
+👀 Inline previews directly in browser- 
+📦 Multi-format export support- 
+🏷️ ZPL label rendering (PNG + PDF conversion)- 
+⚡ No uploads — fully client-driven decoding- 
+🌍 Live deployment---## 
+
+
+🧠 Supported Formats
+| Format | Preview | Export |
+|--------|--------|--------|
+| PNG / JPEG | ✅ Inline image | Original |
+| PDF | ✅ Embedded viewer | Original |
+| ZPL | ✅ Rendered label | PNG + PDF |
+| Unknown Binary | Text preview | Raw file |
+
+---## 🛠 Tech Stack
+- **Backend:** ASP.NET Core (Razor Pages)
+- **Language:** C#
+- **PDF Engine:** QuestPDF
+- **ZPL Rendering:** Labelary API
+- **Deployment:** Render (free tier)
+- **Version Control:** Git + GitHub
+---
+
+- ## 🏗 Architecture
+Core
+├── Interfaces
+└── Models
+Services
+├── Decoding
+├── Detection
+├── Rendering
+└── Export
+Web
+└── Razor Pages UI
+
+🎯 Use Cases
+- Debugging Base64 APIs
+- Viewing shipping labels (ZPL)
+- Inspecting encoded files
+- Developer tooling
+
+---
+
+📜 License
+MIT License — free to use and modify.
+
+👨‍💻 Author
+Ken (Kanishka)
+Computer Science Engineer • Software Developer
