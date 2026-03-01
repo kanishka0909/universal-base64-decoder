@@ -3,89 +3,104 @@
 @{
     ViewData["Title"] = "Universal Base64 Decoder";
 }
-
-<h2>Universal Base64 Decoder</h2>
-
-<form method="post">
-    <div>
-        <textarea asp-for="InputBase64" rows="8" cols="80"
-                  placeholder="Paste base64 string here..."></textarea>
+<div class="container">
+    <h1>Universal Base64 Decoder</h1>
+    <div class="subtitle">
+        Decode, preview and export Base64 content instantly.
     </div>
 
-    <br />
+    <div class="card">
+        <form method="post">
+            <textarea asp-for="InputBase64" rows="8"
+                      placeholder="Paste base64 string here..."></textarea>
 
-    <button type="submit">Decode</button>
-</form>
+            <br /><br />
 
-@if (Model.Result != null)
-{
-    <hr />
-
-    <h3>Decoded Output</h3>
-
-    <p><strong>File Type:</strong> @Model.FileType</p>
-    <p><strong>Suggested Extension:</strong> @Model.Extension</p>
-    <p><strong>Size:</strong> @Model.Size bytes</p>
-    @if (Model.RawBase64 != null)
+            <button type="submit" class="btn btn-primary">Decode</button>
+        </form>
+    </div>
+    @if (Model.Result != null)
     {
-        <p>
-            <a download="@Model.DownloadFileName"
-               href="data:application/octet-stream;base64,@Model.RawBase64">
-                ⬇️ Download decoded file
-            </a>
-        </p>
-    }
+        <div class="card">
 
-    <h4>Preview:</h4>
+            <h3>Decoded Output</h3>
 
-    @* ================= PRIMARY PREVIEW ================= *@
+            <p>
+                <strong>Type:</strong> @Model.FileType
+                <span class="badge">@Model.Extension</span>
+            </p>
+            <p><strong>Size:</strong> @Model.Size bytes</p>
+            @if (Model.RawBase64 != null)
+            {
+                <p>
+                    <a class="btn btn-secondary"
+                       download="@Model.DownloadFileName"
+                       href="data:application/octet-stream;base64,@Model.RawBase64">
+                        Download
+                    </a>
+                </p>
+            }
+            <div style="height:12px;"></div>
+            <h4>Preview:</h4>
 
-    @switch (Model.FileType)
-    {
-        case "PNG Image":
-        case "JPEG Image":
-            <img src="data:@Model.MimeType;base64,@Model.RawBase64"
-                 style="max-width:500px; border:1px solid #ccc;" />
-            break;
+            @* ================= PRIMARY PREVIEW ================= *@
 
-        case "PDF Document":
-            <iframe src="data:@Model.MimeType;base64,@Model.RawBase64"
-                    width="600" height="500"
-                    style="border:1px solid #ccc;"></iframe>
-            break;
+            @switch (Model.FileType)
+            {
+                case "PNG Image":
+                case "JPEG Image":
+                    <div style="max-height:420px; overflow:auto; border:1px solid #ccc; padding:8px;">
+                        <img src="data:@Model.MimeType;base64,@Model.RawBase64"
+                             style="max-width:100%; height:auto;" />
+                    </div>
+                    break;
 
-        default:
-            <pre>@Model.Result</pre>
-            break;
-    }
+                case "PDF Document":
+                    <div style="max-height:420px; overflow:auto; border:1px solid #ccc;">
+                        <iframe src="data:@Model.MimeType;base64,@Model.RawBase64"
+                                width="100%" height="600"
+                                style="border:none;"></iframe>
+                    </div>
+                    break;
 
-    @* ================= ENHANCEMENTS ================= *@
+                default:
+                    <pre>@Model.Result</pre>
+                    break;
+            }
 
-    @* ZPL Rendering Enhancement *@
-    @if (Model.RenderedImageBase64 != null)
-    {
-        <hr />
-        <h4>Rendered Label (ZPL)</h4>
-        <img src="data:image/png;base64,@Model.RenderedImageBase64"
-             style="max-width:500px; border:1px solid #ccc; padding:6px;" />
-    }
-    @if (Model.RenderedImageBase64 != null)
-    {
-        <div style="margin-top:10px;">
-            <a download="export.png"
-               href="data:image/png;base64,@Model.RenderedImageBase64">
-                ⬇️ Download as PNG
-            </a>
+            @if (Model.RenderedImageBase64 != null)
+            {
+
+                <div style="height:12px;"></div>
+                <hr style="border:none; border-top:1px solid #eee; margin:20px 0;" />
+                <h4>Rendered Label</h4>
+
+                <div style="max-height:420px; overflow:auto; border:1px solid #ccc; padding:8px;">
+                    <img src="data:image/png;base64,@Model.RenderedImageBase64"
+                         style="max-width:100%; height:auto;" />
+                </div>
+
+                <div style="height:12px;"></div>
+
+                <a class="btn btn-secondary"
+                   download="export.png"
+                   href="data:image/png;base64,@Model.RenderedImageBase64">
+                    PNG
+                </a>
+
+                @if (Model.ExportPdfBase64 != null)
+                {
+                    <a class="btn btn-secondary"
+                       download="export.pdf"
+                       href="data:application/pdf;base64,@Model.ExportPdfBase64">
+                        PDF
+                    </a>
+                }
+            }
         </div>
     }
 
-    @if (Model.ExportPdfBase64 != null)
-    {
-        <div>
-            <a download="export.pdf"
-               href="data:application/pdf;base64,@Model.ExportPdfBase64">
-                ⬇️ Download as PDF
-            </a>
-        </div>
-    }
-}
+    <div class="footer">
+        Built by Kanishka • Open-source utility
+    </div>
+</div>
