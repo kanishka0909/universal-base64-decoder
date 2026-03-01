@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UniversalBase64Decoder.Core.Interfaces;
 using UniversalBase64Decoder.Services.Rendering;
+using UniversalBase64Decoder.Services.Export;
 namespace UniversalBase64Decoder.Web.Pages;
 
 public class IndexModel : PageModel
@@ -13,6 +14,7 @@ public class IndexModel : PageModel
     [BindProperty]
     public string? InputBase64 { get; set; }
     public string? RenderedImageBase64 { get; set; }
+    public string? ExportPdfBase64 { get; set; }
     public string? Result { get; private set; }
     public string? FileType { get; private set; }
     public string? MimeType { get; private set; }
@@ -20,7 +22,6 @@ public class IndexModel : PageModel
     public long Size { get; private set; }
     public string? RawBase64 { get; private set; }
     public string? DownloadFileName { get; private set; }
-
     public IndexModel(IBase64DecoderService decoder, ZplRendererService renderer)
     {
         _decoder = decoder;
@@ -59,6 +60,8 @@ public class IndexModel : PageModel
             if (image != null)
             {
                 RenderedImageBase64 = Convert.ToBase64String(image);
+                var pdfBytes = ExportService.GeneratePdfFromImage(image);
+                ExportPdfBase64 = Convert.ToBase64String(pdfBytes);
             }
         }
         Size = decoded.Size;

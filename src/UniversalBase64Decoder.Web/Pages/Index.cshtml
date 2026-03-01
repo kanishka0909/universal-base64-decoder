@@ -69,4 +69,23 @@
         <img src="data:image/png;base64,@Model.RenderedImageBase64"
              style="max-width:500px; border:1px solid #ccc; padding:6px;" />
     }
+    @if (Model.RenderedImageBase64 != null)
+    {
+        <div style="margin-top:10px;">
+            <a download="export.png"
+               href="data:image/png;base64,@Model.RenderedImageBase64">
+                ⬇️ Download as PNG
+            </a>
+        </div>
+    }
+
+    @if (Model.ExportPdfBase64 != null)
+    {
+        <div>
+            <a download="export.pdf"
+               href="data:application/pdf;base64,@Model.ExportPdfBase64">
+                ⬇️ Download as PDF
+            </a>
+        </div>
+    }
 }
